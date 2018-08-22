@@ -8,18 +8,19 @@ def diflist(a, b):
 	return sum(c)
 
 
-def main(a, b, c):
+
+
+def main(x1, y1, x2, y2):
 	colours = [[100, 190, 100], [50, 130, 210], [60, 160, 130], [210, 70, 70], [170, 115, 60], [75, 75, 240]]
 	cam = cv2.VideoCapture(0)
 	while True:
 		retval, img = cam.read()
 		cv2.imshow('Camera', img)
-		cv2.rectangle(img, (300, 300), (350, 350), (0, 0, 0), 4)
 		R = []
 		G = []
 		B = []
-		for i in range(a, b):
-			for k  in range(a, c):
+		for i in range(x1, x2):
+			for k  in range(y1, y2):
 				R.append(img[i][k][2]) 
 				G.append(img[i][k][1])
 				B.append(img[i][k][0])
@@ -27,6 +28,11 @@ def main(a, b, c):
 		meanG = sum(G) // len(G)
 		meanB = sum(B) // len(B)
 		RGB = [meanR, meanG, meanB]
+		printcolour = str(meanR) + '  ' + str(meanG) + '  ' + str(meanB)
+		font = cv2.FONT_HERSHEY_SIMPLEX
+		cv2.putText(img, printcolour, (5, 20), font, 1, (255, 0, 0), 2, cv2.LINE_AA)
+		cv2.rectangle(img, (x1, y1), (x2, y2),  (255, 0, 0), 2)
+		cv2.imshow('Camera', img)
 		minimum = 1000
 		answer = 90
 		for i in range(len(colours)):
@@ -38,8 +44,8 @@ def main(a, b, c):
 			break
 	cv2.destroyAllWindows()
 
+
 if __name__ == '__main__':
-	a = int(input())
-	b = int(input())
-	c = int(input())
-	main(a, b, c)
+	x1, y1 = map(int, input().split()) 
+	x2, y2 = map(int, input().split())
+	main(x1, y1, x2, y2)
